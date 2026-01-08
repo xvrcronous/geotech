@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Locate Omniscience - Master Intelligence Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Google Sans', sans-serif;
+            background-color: #f8f9fa;
+            color: #202124;
+        }
+
+        .m3-surface {
+            background: #ffffff;
+            border-radius: 32px;
+            border: 1px solid #e0e2e6;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .m3-surface:hover {
+            box-shadow: 0 10px 30px rgba(60,64,67,0.08);
+        }
+
+        .btn-google {
+            background-color: #1a73e8;
+            color: white;
+            border-radius: 100px;
+            padding: 16px 32px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 6px rgba(26,115,232,0.2);
+        }
+
+        .btn-google:hover {
+            background-color: #1765cc;
+            box-shadow: 0 6px 12px rgba(26,115,232,0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            border: 1.5px solid #dadce0;
+            border-radius: 100px;
+            padding: 12px 24px;
+            font-weight: 500;
+            color: #3c4043;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f1f3f4;
+        }
+
+        .data-chip {
+            background: #f1f3f4;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .label-bold {
+            font-size: 11px;
+            font-weight: 700;
+            color: #70757a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .val-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1a1b1c;
+        }
+
+        .mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #1a73e8;
+            border-bottom: 1px solid #e8eaed;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Progress Bar */
+        .g-progress {
+            height: 6px;
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .g-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335);
+            width: 0%;
+            transition: width 0.4s;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10 selection:bg-blue-100">
+
+    <header class="max-w-7xl mx-auto mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-white rounded-3xl shadow-sm border border-gray-100 flex items-center justify-center">
+                <svg width="40" height="40" viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#4285F4"/>
+                    <circle cx="12" cy="9" r="2.5" fill="white"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-[#202124]">Locate <span class="text-blue-600">Omniscience</span></h1>
+                <p class="text-sm text-gray-500 font-medium">Digital Forensic & Geospasial Intelligence Dashboard</p>
+            </div>
+        </div>
+        <button onclick="executeFullAnalysis()" id="btn-action" class="btn-google">
+            <i data-lucide="scan-eye" class="w-6 h-6"></i>
+            JALANKAN SCAN MAHA TAHU
+        </button>
+    </header>
+
+    <main class="max-w-7xl mx-auto">
+        
+        <!-- Loading UI -->
+        <div id="loading-box" class="hidden m3-surface p-12 text-center space-y-6 mb-10">
+            <div class="g-progress"><div id="g-progress-val" class="g-progress-fill"></div></div>
+            <div class="flex flex-col items-center">
+                <p id="loader-status" class="text-lg font-medium text-blue-600 animate-pulse">Menghubungkan ke satelit GPS...</p>
+                <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-bold">Protocol: Secure Extraction v5.2</p>
+            </div>
+        </div>
+
+        <!-- Result Grid -->
+        <div id="dashboard" class="hidden space-y-8 animate-in fade-in duration-1000 pb-20">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Left Column: Location & Map -->
+                <div class="lg:col-span-2 space-y-8">
+                    
+                    <!-- Geospasial Section -->
+                    <div class="m3-surface p-8">
+                        <div class="section-title">
+                            <i data-lucide="map-pin"></i> Intelligence Geospasial
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
+                                <span class="label-bold">Latitude</span>
+                                <span id="v-lat" class="val-text mono text-blue-700">-</span>
+                            </div>
+                            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
+                                <span class="label-bold">Longitude</span>
+                                <span id="v-lon" class="val-text mono text-blue-700">-</span>
+                            </div>
+                            <div class="bg-green-50/50 p-4 rounded-2xl border border-green-100">
+                                <span class="label-bold">Accuracy</span>
+                                <span id="v-acc" class="val-text font-bold text-green-700">-</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <div class="border-b border-gray-100 pb-2">
+                                    <span class="label-bold">Alamat Kampung / Desa</span>
+                                    <span id="v-village" class="val-text font-bold">-</span>
+                                </div>
+                                <div class="border-b border-gray-100 pb-2">
+                                    <span class="label-bold">Kecamatan / Distrik</span>
+                                    <span id="v-district" class="val-text">-</span>
+                                </div>
+                                <div class="border-b border-gray-100 pb-2">
+                                    <span class="label-bold">Kota / Kabupaten</span>
+                                    <span id="v-city" class="val-text">-</span>
+                                </div>
+                                <div class="border-b border-gray-100 pb-2">
+                                    <span class="label-bold">Provinsi</span>
+                                    <span id="v-province" class="val-text">-</span>
+                                </div>
+                                <div>
+                                    <span class="label-bold text-blue-600">Kode Pos</span>
+                                    <span id="v-zip" class="text-4xl font-black text-blue-600 tracking-tighter">-</span>
+                                </div>
+                            </div>
+                            <div class="space-y-4 bg-gray-50 p-6 rounded-3xl">
+                                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Elevasi & Pergerakan</h4>
+                                <div class="flex justify-between"><span class="text-xs font-medium">Ketinggian (Altitude)</span><span id="v-alt" class="text-xs font-bold">-</span></div>
+                                <div class="flex justify-between"><span class="text-xs font-medium">Kecepatan Gerak</span><span id="v-speed" class="text-xs font-bold">-</span></div>
+                                <div class="flex justify-between"><span class="text-xs font-medium">Arah Hadap</span><span id="v-heading" class="text-xs font-bold">-</span></div>
+                                <div class="pt-6 border-t border-gray-200">
+                                    <a id="link-gmaps" href="#" target="_blank" class="w-full bg-[#202124] text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-black transition-all">
+                                        <i data-lucide="map" class="w-5 h-5"></i> BUKA DI GOOGLE MAPS
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network Intelligence -->
+                    <div class="m3-surface p-8">
+                        <div class="section-title">
+                            <i data-lucide="wifi"></i> Network Deep Analysis
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <div class="p-4 bg-blue-50/30 rounded-2xl border border-blue-50">
+                                    <p class="label-bold">Public IP Address</p>
+                                    <p id="v-ip" class="val-text mono font-bold text-blue-600">-</p>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-2xl">
+                                    <p class="label-bold">Internet Service Provider (ISP)</p>
+                                    <p id="v-isp" class="val-text">-</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex justify-between border-b pb-2"><span class="text-sm font-medium">Tipe Koneksi</span><span id="v-net-type" class="text-sm font-bold">-</span></div>
+                                <div class="flex justify-between border-b pb-2"><span class="text-sm font-medium">Downlink Speed</span><span id="v-net-down" class="text-sm font-bold text-green-600">-</span></div>
+                                <div class="flex justify-between border-b pb-2"><span class="text-sm font-medium">Zona Waktu (TZ)</span><span id="v-tz" class="text-sm font-bold">-</span></div>
+                                <div class="flex justify-between"><span class="text-sm font-medium">Negara (ISO)</span><span id="v-country" class="text-sm font-bold">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Forensic & Device -->
+                <div class="space-y-8">
+                    
+                    <!-- Forensic Report Button -->
+                    <button onclick="copyOmniReport()" class="w-full py-6 rounded-3xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-lg shadow-xl shadow-emerald-200 transition-all flex items-center justify-center gap-4 active:scale-95">
+                        <i data-lucide="clipboard-check" class="w-6 h-6"></i>
+                        SALIN LAPORAN MAHA TAHU
+                    </button>
+
+                    <!-- Hardware Forensic -->
+                    <div class="m3-surface p-8 bg-slate-900 text-slate-100">
+                        <div class="section-title !text-white !border-slate-700">
+                            <i data-lucide="cpu"></i> Hardware Forensic
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center"><span class="label-bold !text-slate-400">Processor Cores</span><span id="v-cpu" class="text-sm font-bold">-</span></div>
+                            <div class="flex justify-between items-center"><span class="label-bold !text-slate-400">Memory (RAM)</span><span id="v-ram" class="text-sm font-bold">-</span></div>
+                            <div class="flex justify-between items-center"><span class="label-bold !text-slate-400">GPU Info</span><span id="v-gpu" class="text-xs font-bold text-blue-400 text-right">-</span></div>
+                            <div class="flex justify-between items-center"><span class="label-bold !text-slate-400">Screen Ratio</span><span id="v-dpr" class="text-sm font-bold">-</span></div>
+                            <div class="flex justify-between items-center"><span class="label-bold !text-slate-400">Touch Points</span><span id="v-touch" class="text-sm font-bold">-</span></div>
+                            <div class="flex justify-between items-center"><span class="label-bold !text-slate-400">Media Input</span><span id="v-media" class="text-xs italic text-slate-400">-</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Software & OS Intelligence -->
+                    <div class="m3-surface p-8">
+                        <div class="section-title">
+                            <i data-lucide="settings"></i> Software Intelligence
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between"><span class="label-bold">Operating System</span><span id="v-os" class="text-sm font-bold text-gray-700">-</span></div>
+                            <div class="flex justify-between"><span class="label-bold">Browser Version</span><span id="v-browser" class="text-sm font-bold text-gray-700">-</span></div>
+                            <div class="flex justify-between"><span class="label-bold">Language Mode</span><span id="v-lang" class="text-sm font-bold text-gray-700">-</span></div>
+                            <div class="flex justify-between"><span class="label-bold">Cookie Status</span><span id="v-cookie" class="text-sm font-bold text-green-600">-</span></div>
+                            <div class="flex justify-between"><span class="label-bold">Privacy Mode (DNT)</span><span id="v-dnt" class="text-sm font-bold">-</span></div>
+                            <div class="pt-4 mt-2 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                                <p class="label-bold">Screen Metadata</p>
+                                <p id="v-screen" class="text-xs font-bold text-gray-500">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Battery Status -->
+                    <div class="m3-surface p-8 bg-amber-50/50 border-amber-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-amber-900 flex items-center gap-2">
+                                <i data-lucide="battery-charging"></i> Power Analytics
+                            </h3>
+                            <span id="v-bat-lvl" class="text-3xl font-black text-amber-600">-</span>
+                        </div>
+                        <p id="v-bat-stat" class="text-xs font-bold text-amber-700 mt-2 uppercase tracking-widest">-</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RAW User Agent -->
+            <div class="m3-surface p-6 bg-[#202124] text-gray-400">
+                <span class="label-bold !text-gray-500 mb-2">Full Forensic User Agent</span>
+                <p id="v-ua" class="text-[10px] mono leading-relaxed break-all">-</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Hidden Utils -->
+    <textarea id="copy-worker" class="fixed -top-full opacity-0 pointer-events-none"></textarea>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 opacity-0 translate-y-10 transition-all duration-500 z-[100]">
+        <div class="bg-gray-900 text-white px-8 py-4 rounded-full shadow-2xl font-bold text-sm flex items-center gap-3">
+            <i data-lucide="shield-check" class="text-green-400"></i>
+            <span id="toast-msg">Laporan Forensik Berhasil Disalin!</span>
+        </div>
+    </div>
+
+    <!-- Script Forensic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'locate-omniscience-vfinal';
+
+        async function initAuth() {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+        }
+        initAuth();
+
+        window.executeFullAnalysis = async () => {
+            const btn = document.getElementById('btn-action');
+            const loader = document.getElementById('loading-box');
+            const dash = document.getElementById('dashboard');
+            const progress = document.getElementById('g-progress-val');
+            const status = document.getElementById('loader-status');
+
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+            dash.classList.add('hidden');
+
+            const updateStep = (p, text) => {
+                progress.style.width = p + '%';
+                status.innerText = text;
+            };
+
+            try {
+                // Step 1: Network & ISP
+                updateStep(20, "Mengekstrak Layer Jaringan (IP & ISP)...");
+                const ipRes = await fetch('https://ipapi.co/json/');
+                const net = await ipRes.json();
+
+                // Step 2: Battery & Hardware Media
+                updateStep(40, "Memindai Sensor & Hardware...");
+                const bat = await (navigator.getBattery ? navigator.getBattery() : Promise.resolve({level: 1, charging: false}));
+                const media = await (navigator.mediaDevices ? navigator.mediaDevices.enumerateDevices() : Promise.resolve([]));
+                const camCount = media.filter(d => d.kind === 'videoinput').length;
+                const micCount = media.filter(d => d.kind === 'audioinput').length;
+
+                // Step 3: GPU Extraction
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
+                const gpu = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "Software Renderer";
+
+                // Step 4: Geolocation Discovery
+                updateStep(70, "Mengakses Satelit Geospasial Presisi...");
+                navigator.geolocation.getCurrentPosition(
+                    (p) => processOmniscience(p.coo
